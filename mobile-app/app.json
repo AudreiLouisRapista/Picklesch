@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "Picklesch",
+    "slug": "picklesch",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic"
+  }
+}

@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+coverage/
+
+# Environment files (keep .env.example)
+.env
+.env.*
+!.env.example
+
+# Expo / React Native
+.expo/
+*.log
+
+# Graphify outputs
+graphify-out/
+
+# OS
+.DS_Store
+Thumbs.db
