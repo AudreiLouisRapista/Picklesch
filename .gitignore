@@ -17,6 +17,9 @@ coverage/
 # Graphify outputs
 graphify-out/
 
+# Transient doc-sync pending marker (written by the post-commit hook, cleared by /sync-docs)
+.opencode/.doc-sync-pending
+
 # OS
 .DS_Store
 Thumbs.db
