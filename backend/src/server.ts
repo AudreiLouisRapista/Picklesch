@@ -1,8 +1,12 @@
 import 'dotenv/config';
 
+import { createServer } from 'node:http';
+
 import { createApp } from './app';
 import { loadConfig } from './config/env';
 import { connectDatabase } from './config/database';
+import { createRealtime } from './realtime';
+import { startFormationScheduler } from './scheduler';
 
 async function main(): Promise<void> {
   const config = loadConfig();
@@ -10,8 +14,12 @@ async function main(): Promise<void> {
   await connectDatabase(config.mongoUri);
 
   const app = createApp();
+  const server = createServer(app);
 
-  app.listen(config.port, () => {
+  createRealtime(server);
+  startFormationScheduler();
+
+  server.listen(config.port, () => {
     console.log(`Picklesch API (${config.env}) listening on http://localhost:${config.port}`);
   });
 }

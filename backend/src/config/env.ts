@@ -12,6 +12,10 @@ export interface AppConfig {
   accessTokenTtl: string;
   refreshTokenTtlMs: number;
   provisionalMatchCount: number;
+  courtGapCap: number;
+  formationCadenceMs: number;
+  checkInWindowMsBefore: number;
+  checkInWindowMsAfter: number;
 }
 
 export function getEnvProfile(raw: string | undefined = process.env.NODE_ENV): EnvProfile {
@@ -43,5 +47,9 @@ export function loadConfig(): AppConfig {
     accessTokenTtl: process.env.ACCESS_TOKEN_TTL ?? '15m',
     refreshTokenTtlMs: Number(process.env.REFRESH_TOKEN_TTL_MS ?? 30 * 24 * 60 * 60 * 1000),
     provisionalMatchCount: Number(process.env.PROVISIONAL_MATCH_COUNT ?? 12),
+    courtGapCap: Number(process.env.COURT_GAP_CAP ?? 0.5),
+    formationCadenceMs: Number(process.env.FORMATION_CADENCE_MS ?? 15 * 60 * 1000),
+    checkInWindowMsBefore: Number(process.env.CHECK_IN_WINDOW_BEFORE_MS ?? 30 * 60 * 1000),
+    checkInWindowMsAfter: Number(process.env.CHECK_IN_WINDOW_AFTER_MS ?? 15 * 60 * 1000),
   };
 }

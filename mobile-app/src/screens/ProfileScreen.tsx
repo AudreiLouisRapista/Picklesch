@@ -4,10 +4,11 @@ import { PlayerProfile } from '../api/client';
 
 export interface ProfileScreenProps {
   profile: PlayerProfile;
+  onCheckIn: () => void;
   onLogout: () => void;
 }
 
-export default function ProfileScreen({ profile, onLogout }: ProfileScreenProps) {
+export default function ProfileScreen({ profile, onCheckIn, onLogout }: ProfileScreenProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>{profile.name}</Text>
@@ -34,6 +35,10 @@ export default function ProfileScreen({ profile, onLogout }: ProfileScreenProps)
           {Math.round(profile.singles.rating)} ± {Math.round(profile.singles.rd)}
         </Text>
       </View>
+
+      <Pressable onPress={onCheckIn} style={styles.checkIn}>
+        <Text style={styles.checkInText}>Check in to a session</Text>
+      </Pressable>
 
       <Pressable onPress={onLogout} style={styles.logout}>
         <Text style={styles.logoutText}>Log out</Text>
@@ -96,5 +101,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#111827',
+  },
+  checkIn: {
+    backgroundColor: '#16a34a',
+    borderRadius: 8,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  checkInText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#ffffff',
   },
 });

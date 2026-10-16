@@ -1,9 +1,10 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 
-import { AuthError } from './modules/auth/errors';
+import { AppError } from './errors';
 import authRouter from './routes/auth';
 import healthRouter from './routes/health';
 import playersRouter from './routes/players';
+import sessionsRouter from './routes/sessions';
 
 export function createApp(): Express {
   const app = express();
@@ -12,9 +13,10 @@ export function createApp(): Express {
   app.use('/api/v1/health', healthRouter);
   app.use('/api/v1/auth', authRouter);
   app.use('/api/v1/players', playersRouter);
+  app.use('/api/v1/sessions', sessionsRouter);
 
   app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
-    if (error instanceof AuthError) {
+    if (error instanceof AppError) {
       res.status(error.status).json({ error: { code: error.code, message: error.message } });
       return;
     }

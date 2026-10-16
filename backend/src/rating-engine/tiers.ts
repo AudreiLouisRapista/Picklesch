@@ -14,6 +14,18 @@ export const TIER_BOUNDARIES: readonly TierBoundary[] = [
   { tier: '5.0+', min: 2200 },
 ];
 
+export const RATING_POINTS_PER_SKILL_UNIT = 400;
+
+export function ratingToSkill(rating: number): number {
+  const base = TIER_BOUNDARIES[0];
+
+  return Number(base.tier) + (rating - base.min) / RATING_POINTS_PER_SKILL_UNIT;
+}
+
+export function skillSpreadToRatingPoints(spread: number): number {
+  return spread * RATING_POINTS_PER_SKILL_UNIT;
+}
+
 export type SelectableTier = '2.5' | '3.0' | '3.5' | '4.0';
 
 export const SELECTABLE_TIERS: readonly SelectableTier[] = ['2.5', '3.0', '3.5', '4.0'];

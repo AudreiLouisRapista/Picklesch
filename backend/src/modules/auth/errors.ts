@@ -1,10 +1,8 @@
-export class AuthError extends Error {
-  constructor(
-    public readonly status: number,
-    public readonly code: string,
-    message: string,
-  ) {
-    super(message);
+import { AppError } from '../../errors';
+
+export class AuthError extends AppError {
+  constructor(status: number, code: string, message: string) {
+    super(status, code, message);
     this.name = 'AuthError';
   }
 }

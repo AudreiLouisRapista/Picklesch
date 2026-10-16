@@ -1,4 +1,4 @@
-const DEFAULT_BASE_URL = 'http://localhost:4000/api/v1';
+export const DEFAULT_BASE_URL = 'http://localhost:4000/api/v1';
 
 export const DEVICE_FINGERPRINT = `mobile-${Math.random().toString(36).slice(2, 10)}`;
 
@@ -31,6 +31,56 @@ export interface AuthSession {
   user: PlayerProfile;
   accessToken: string;
   refreshToken: string;
+}
+
+export type SessionFormat = 'doubles' | 'singles';
+
+export interface SessionPlayer {
+  id: string;
+  name: string;
+  rating: number;
+  skill: number;
+  tier: string;
+  rd: number;
+}
+
+export interface SessionCourt {
+  label: string;
+  players: SessionPlayer[];
+  spread: number;
+}
+
+export interface SessionWaitlistEntry {
+  player: SessionPlayer;
+  position: number;
+}
+
+export interface SessionView {
+  id: string;
+  name: string;
+  status: string;
+  format: SessionFormat;
+  scoringType: string;
+  startTime: string;
+  endTime: string;
+  checkInOpensAt: string;
+  checkInClosesAt: string;
+  checkInOpen: boolean;
+  qrCode: string | null;
+  maxPlayers: number;
+  courtCount: number;
+  checkedInCount: number;
+  courts: SessionCourt[];
+  waitlist: SessionWaitlistEntry[];
+  viewer: {
+    checkedIn: boolean;
+    courtLabel: string | null;
+    waitlistPosition: number | null;
+  };
+}
+
+export function socketBaseUrl(baseUrl: string = DEFAULT_BASE_URL): string {
+  return baseUrl.replace(/\/api\/v1\/?$/, '');
 }
 
 export interface RegisterFormInput {
@@ -107,6 +157,20 @@ export function createApiClient(baseUrl: string = DEFAULT_BASE_URL) {
     async fetchProfile(accessToken: string): Promise<PlayerProfile> {
       const payload = await send<{ user: PlayerProfile }>('/players/me', { accessToken });
       return payload.user;
+    },
+    async checkIn(sessionId: string, qrCode: string, accessToken: string): Promise<SessionView> {
+      const payload = await send<{ session: SessionView }>(`/sessions/${sessionId}/checkin`, {
+        method: 'POST',
+        body: JSON.stringify({ qrCode }),
+        accessToken,
+      });
+      return payload.session;
+    },
+    async fetchSession(sessionId: string, accessToken: string): Promise<SessionView> {
+      const payload = await send<{ session: SessionView }>(`/sessions/${sessionId}`, {
+        accessToken,
+      });
+      return payload.session;
     },
   };
 }
